@@ -24,15 +24,15 @@ namespace CodeBase.View
             var absX = Mathf.Abs(endPosition.x - startPosition.x);
             var absY = Mathf.Abs(endPosition.y - startPosition.y);
 
-            if (absX > absY)
+            if (absX * 2 > absY)
             {
-                var deltaX = startPosition.x < endPosition.x ? _lengthBigPart : -_lengthBigPart;
+                var deltaX = startPosition.x > endPosition.x ? _lengthBigPart : -_lengthBigPart;
                 _line1 = new Vector2(endPosition.x + deltaX, endPosition.y + _lengthSmallPart);
                 _line2 = new Vector2(endPosition.x + deltaX, endPosition.y - _lengthSmallPart);
             }
             else
             {
-                var deltaY = startPosition.y < endPosition.y ? _lengthBigPart : -_lengthBigPart;
+                var deltaY = startPosition.y > endPosition.y ? _lengthBigPart : -_lengthBigPart;
                 _line1 = new Vector2(endPosition.x + _lengthSmallPart, endPosition.y + deltaY);
                 _line2 = new Vector2(endPosition.x - _lengthSmallPart, endPosition.y + deltaY);
             }

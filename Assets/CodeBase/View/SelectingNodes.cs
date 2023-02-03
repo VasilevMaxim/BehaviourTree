@@ -34,6 +34,14 @@ namespace CodeBase.View
             
             foreach (var node in _workspace.Nodes)
             {
+                foreach (var waypoint in  node.GetWaypoints())
+                {
+                    if (Vector2.Distance(mousePosition, waypoint.Position) < waypoint.DeltaSize)
+                    {
+                        return;
+                    }
+                }
+
                 if (mousePosition.x > node.Position.x 
                     && mousePosition.x < node.Position.x + node.Scale.x
                     && mousePosition.y > node.Position.y

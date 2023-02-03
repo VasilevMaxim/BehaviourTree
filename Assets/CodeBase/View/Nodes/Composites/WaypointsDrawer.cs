@@ -20,6 +20,14 @@ public class WaypointsDrawer
     {
         _count = count;
         _scaleSelectZone = new Vector2(15, 15);
+        
+        Waypoints = new List<Waypoint>
+        {
+            new(20) { Position = _positionUp },
+            new(20) { Position = _positionDown },
+            new(20) { Position = _positionRight },
+            new(20) { Position = _positionLeft }
+        };
     }
 
     public void Move(Vector2 scale, Vector2 position)
@@ -30,14 +38,6 @@ public class WaypointsDrawer
             _positionDown = new Vector2(position.x + scale.x / 2 - _scaleSelectZone.x / 2, position.y + scale.y - _scaleSelectZone.y / 2);
             _positionRight = new Vector2(position.x + scale.x - _scaleSelectZone.x / 2, position.y + scale.y / 2 - _scaleSelectZone.y / 2);
             _positionLeft = new Vector2(position.x - _scaleSelectZone.x / 2, position.y + scale.y / 2 - _scaleSelectZone.y / 2);
-            
-            Waypoints = new List<Waypoint>
-            {
-                new(20) { Position = _positionUp },
-                new(20) { Position = _positionDown },
-                new(20) { Position = _positionRight },
-                new(20) { Position = _positionLeft }
-            };
             
             Waypoints[0].Position = _positionUp + _scaleSelectZone / 2;
             Waypoints[1].Position = _positionDown + _scaleSelectZone / 2;
