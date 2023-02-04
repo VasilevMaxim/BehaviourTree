@@ -29,21 +29,17 @@ namespace CodeBase.View
         
         public void DrawFixedWays()
         {
-            _wayControlPointPositions = new List<List<Vector3>>();
             foreach (var way in _waypointsLinked)
             {
                 var pointsWay = _paverWay.Pave(way.start.Position, way.end.Position);
                 DrawWay(pointsWay);
-                
-                _wayControlPointPositions.Add(new List<Vector3>());
-                _wayControlPointPositions[^1].AddRange(pointsWay);
             }
         }
         
         public void DrawWay(IEnumerable<Vector3> points)
         {
             var pointsArray = points.ToArray();
-            _drawer.Draw();
+            _drawer.Draw(pointsArray);
             _drawerArrow.Draw(pointsArray[0], pointsArray[^1]);
         }
         
