@@ -4,14 +4,7 @@ namespace CodeBase.View
 {
     public class HintPositionView
     {
-        private readonly IInputEventsView _inputEventsView;
-
-        public HintPositionView(IInputEventsView inputEventsView)
-        {
-            _inputEventsView = inputEventsView;
-        }
-
-        public void Draw(INodeView node, Vector2 delta)
+        public void Draw(INodeView node)
         {
             if (node == null)
             {
