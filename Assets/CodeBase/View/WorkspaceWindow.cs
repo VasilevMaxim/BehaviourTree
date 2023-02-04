@@ -26,6 +26,7 @@ namespace CodeBase.View
         private IGetterNodesView _getterNodesView;
         private Vector2 _scrollPosition;
         private readonly HintPositionView _hintPositionView;
+        private readonly GridFull _gridFull;
         public Rect RectScale { get; set; }
 
         public WorkspaceWindow(IInputEventsView inputEvents, IGetterNodesView getterNodesView)
@@ -37,6 +38,7 @@ namespace CodeBase.View
             _inputDrawerLinks = new InputDrawerLinks(_workspace, _drawerLinks, inputEvents);
             _viewControl = new ViewControl(_workspace, this, inputEvents);
             _hintPositionView = new HintPositionView(_inputEvents);
+            _gridFull = new GridFull(2);
             
             _viewControl.Initialize();
             RectScale = new Rect(0, 0, 800, 1500);
@@ -53,11 +55,14 @@ namespace CodeBase.View
             _inputEvents.SetDeltaScrollWindow(delta);
 
             _scrollPosition = GUI.BeginScrollView(Rect, _scrollPosition, RectScale);
+            
+            _gridFull.Draw(Rect, RectScale);
+            
             _workspace.Nodes = _getterNodesView.GetNodes().ToList();
             _workspace.Nodes.ForEach(f => f.Update());
             _inputDrawerLinks.Draw();
             _hintPositionView.Draw(_viewControl.SelectingNodes.NodeViewSelected, delta);
-            
+
             GUI.EndScrollView();
             
             //_sv.Update();
