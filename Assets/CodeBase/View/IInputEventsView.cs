@@ -5,12 +5,15 @@ namespace CodeBase.View
 {
     public interface IInputEventsView
     {
-        public Vector2 MousePosition { get; }
-        public bool IsMouseDrag { get; }
+        void SetDeltaScrollWindow(Vector2 delta);
         
-        public event Action<Vector2> MouseDown;
-        public event Action<Vector2> MouseDrag;
-        public event Action<Vector2> MouseUp;
-        public event Action Layout;
+        Vector2 MousePosition { get; }
+        bool IsMouseDrag { get; }
+        
+        event Action<Vector2> MouseDown;
+        event Action<Vector2> MouseRightDown;
+        event Action<Vector2> MouseDrag;
+        event Action<Vector2> MouseUp;
+        event Action Layout;
     }
 }

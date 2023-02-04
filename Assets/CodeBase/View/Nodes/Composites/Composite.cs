@@ -6,9 +6,8 @@ using UnityEngine;
 
 public abstract class Composite : IComposite
 {
-    public Vector2 Position { get; set; }
-    public Vector2 Scale { get; }
-
+  
+    public Rect Rect { get; set; }
     
     public event Action<INodeView> AddedChild;
     public event Action<INodeView> SetedParent;
@@ -22,8 +21,7 @@ public abstract class Composite : IComposite
     {
         Style = style;
         WaypointsDrawer = waypointsDrawer;
-        Position = startPosition;
-        Scale = Style.Scale;
+        Rect = new Rect(startPosition, Style.Scale);
         
         ColorCurrent = Style.ColorDefault;
     }
@@ -54,4 +52,5 @@ public abstract class Composite : IComposite
     {
         ColorCurrent = Style.ColorDefault;
     }
+
 }

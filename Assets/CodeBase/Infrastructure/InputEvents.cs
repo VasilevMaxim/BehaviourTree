@@ -7,11 +7,13 @@ namespace CodeBase.Infrastructure
     public class InputEvents : IInputEventsView
     {
         private Action _repaint;
-        
+        private Vector2 _deltaScrollWindow;
+
         public Vector2 MousePosition { get; private set; }
         public bool IsMouseDrag { get; private set; }
         
         public event Action<Vector2> MouseDown;
+        public event Action<Vector2> MouseRightDown;
         public event Action<Vector2> MouseDrag;
         public event Action<Vector2> MouseUp;
         public event Action Layout;
@@ -24,29 +26,40 @@ namespace CodeBase.Infrastructure
         public void Check()
         {
             Event e = Event.current;
-            MousePosition = e.mousePosition;
+            MousePosition = e.mousePosition - _deltaScrollWindow;
             switch (e.type)
             {
                 case EventType.Layout:
                     Layout?.Invoke();
                     break;
                 case EventType.MouseDown:
-                    MouseDown?.Invoke(e.mousePosition);
+                    if (e.button == 1)
+                    {
+                        MouseRightDown?.Invoke(MousePosition);
+                    }
+                    else
+                    {
+                        MouseDown?.Invoke(MousePosition);
+                    }
                     _repaint?.Invoke();
                     break;
                 case EventType.MouseDrag:
-                    MouseDrag?.Invoke(e.mousePosition);
+                    MouseDrag?.Invoke(MousePosition);
                     IsMouseDrag = true;
                     _repaint?.Invoke();
                     break;
 
                 case EventType.MouseUp:
-                    MouseUp?.Invoke(e.mousePosition);
+                    MouseUp?.Invoke(MousePosition);
                     IsMouseDrag = false;
                     _repaint?.Invoke();
                     break;
             }
-
+        }
+        
+        public void SetDeltaScrollWindow(Vector2 delta)
+        {
+            _deltaScrollWindow = delta;
         }
     }
 }

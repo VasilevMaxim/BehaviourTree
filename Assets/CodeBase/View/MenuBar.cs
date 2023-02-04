@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace CodeBase.View
@@ -7,6 +8,8 @@ namespace CodeBase.View
     {
         private GUIStyle _skinMenuBarButton;
 
+        public event Action AddingSequence;
+        
         public void Update()
         {
             _skinMenuBarButton = new GUIStyle(GUI.skin.button)
@@ -48,7 +51,7 @@ namespace CodeBase.View
             GUILayout.BeginHorizontal(styleBox, GUILayout.Width(Screen.width * 0.8f), GUILayout.Height(50));
             if (GUILayout.Button("Sequence", styleButton, GUILayout.Width(90), GUILayout.Height(48)))
             {
-                
+                AddingSequence?.Invoke();
             }
             GUILayout.Button("Selector", styleButton, GUILayout.Width(90), GUILayout.Height(48));
             GUILayout.Button("Decorator", styleButton, GUILayout.Width(90), GUILayout.Height(48));

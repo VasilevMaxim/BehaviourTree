@@ -8,20 +8,19 @@
         private readonly ContextMenu _contextMenu;
         private readonly MenuBar _menuBar;
         
-        public ViewContainer(IInputEventsView inputEvents, IGetterNodesView getterNodesView)
+        public ViewContainer(IInputEventsView inputEvents, IGetterNodesView getterNodesView, MenuBar menuBar)
         {
             _workspace = new WorkspaceWindow(inputEvents, getterNodesView);
             _inspector = new InspectorWindow();
-            _contextMenu = new ContextMenu();
-            _menuBar = new MenuBar();
+            _contextMenu = new ContextMenu(_workspace, inputEvents);
+            _menuBar = menuBar;
         }
 
         public void Draw()
         {
             // Menu
             _menuBar.Update();
-            _contextMenu.Update();
-            
+
             // Windows
             _workspace.Update();
             _inspector.Update();

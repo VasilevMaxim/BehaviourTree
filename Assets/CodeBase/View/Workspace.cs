@@ -4,7 +4,7 @@ namespace CodeBase.View
 {
     public class Workspace
     {
-        public List<INodeView> Nodes { get; }
+        public List<INodeView> Nodes { get; set; }
 
         public Workspace()
         {

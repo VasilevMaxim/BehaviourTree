@@ -20,9 +20,9 @@ namespace CodeBase.View
                 alignment = TextAnchor.MiddleCenter
             };
 
-            EditorGUI.DrawRect(new Rect(Position, Scale), ColorCurrent);
-            WaypointsDrawer.Move(Style.Scale, Position);
-            GUI.Label(new Rect(Position, Scale), SequenceText, _styleLabel);
+            EditorGUI.DrawRect(Rect, ColorCurrent);
+            WaypointsDrawer.Move(Style.Scale, Rect.position);
+            GUI.Label(Rect, SequenceText, _styleLabel);
         }
     }
 }

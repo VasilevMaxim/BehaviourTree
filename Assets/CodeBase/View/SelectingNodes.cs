@@ -42,10 +42,7 @@ namespace CodeBase.View
                     }
                 }
 
-                if (mousePosition.x > node.Position.x 
-                    && mousePosition.x < node.Position.x + node.Scale.x
-                    && mousePosition.y > node.Position.y
-                    && mousePosition.y < node.Position.y + node.Scale.y)
+                if (mousePosition.IsHoverRect(node.Rect))
                 {
                     node.Select();
                     NodeViewSelected = node;

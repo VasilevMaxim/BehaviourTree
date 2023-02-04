@@ -7,8 +7,7 @@ namespace CodeBase.View
 {
     public class TaskView : UIElement, IUpdatable
     {
-        public Vector2 Position { get; set; }
-        public Vector2 Scale { get; private set; }
+        public Rect Rect { get; set; }
         public Vector2 ScaleDiscription { get; private set; }
 
         private bool _isDown;
@@ -26,21 +25,19 @@ namespace CodeBase.View
 
         public TaskView(Vector2 startPosition)
         {
-          //  InputEvents.MouseDown += ControlHelperOnMouseDown;
-           // InputEvents.MouseUp += (_) => _isDown = false;
-            Position = startPosition;
-            Scale = new Vector2(150, 70); 
+            Rect = Rect.GetRectNewPosition(startPosition);
+            Rect = Rect.GetRectNewSize(new Vector2(150, 70)); 
             ScaleDiscription = new Vector2(150, 25); 
-            _waypoint = new Waypoint(8){Position = new Vector2(Position.x, Position.y + (Scale.y - ScaleDiscription.y))};
+            _waypoint = new Waypoint(8){Position = new Vector2(Rect.position.x, Rect.position.y + (Rect.size.y - ScaleDiscription.y))};
         }
 
         private void ControlHelperOnMouseDown(Vector2 mousePosition)
         {
-            _isDown = mousePosition.x > Position.x && mousePosition.x < Position.x + Scale.x 
-                                                   && mousePosition.y > Position.y 
-                                                   && mousePosition.y < Position.y + Scale.y;
+            _isDown = mousePosition.x > Rect.position.x && mousePosition.x < Rect.position.x + Rect.size.x 
+                                                        && mousePosition.y > Rect.position.y 
+                                                        && mousePosition.y < Rect.position.y + Rect.size.y;
             _startDown = mousePosition;
-            _startPosition = Position;
+            _startPosition = Rect.position;
         }
         
         public void Update()
@@ -49,16 +46,16 @@ namespace CodeBase.View
             _colorBackgroundDefault = new Color(0.2f, 0.2f, 0.2f, 0.9f);
             _colorSelected = new Color(0.34f, 0.34f, 0.35f, 0.7f);
 
-            EditorGUI.DrawRect(new Rect(Position, Scale), _colorCurrent);
+            EditorGUI.DrawRect(Rect, _colorCurrent);
             EditorGUI.DrawRect(new Rect(_waypoint.Position, ScaleDiscription), _colorBackgroundDefault);
             
             GUIStyle styleLabel = GUI.skin.label;
             styleLabel.alignment = TextAnchor.MiddleCenter;
-            GUI.Label(new Rect(Position, Scale), "TaskView", styleLabel);
+            GUI.Label(Rect, "TaskView", styleLabel);
 
             var image = EditorGUIUtility.IconContent("d_PreMatQuad@2x").image;
             var scaleTexture = new Vector2(15, 15);
-            var positionUp = new Vector2(Position.x + Scale.x / 2 - scaleTexture.x / 2, Position.y - scaleTexture.y / 2);
+            var positionUp = new Vector2(Rect.position.x + Rect.size.x / 2 - scaleTexture.x / 2, Rect.position.y - scaleTexture.y / 2);
 
             GUI.DrawTexture( new Rect(positionUp, scaleTexture), image);
 
@@ -80,7 +77,7 @@ namespace CodeBase.View
             var positionAll = deltaPosition - (_startDown - _startPosition);
             var clampX = Mathf.Clamp(positionAll.x, 0, RectZone.x);
             //var clampY = Mathf.Clamp(positionAll.y, 0, RectZone.y);
-            Position = new Vector2(clampX, positionAll.y);
+            Rect.GetRectNewPosition(new Vector2(clampX, positionAll.y));
         }
 
         public void Select()
@@ -97,6 +94,7 @@ namespace CodeBase.View
         {
             return new[] { _waypoint };
         }
+
     }
 
     public interface IUpdatable

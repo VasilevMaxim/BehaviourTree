@@ -2,11 +2,11 @@
 
 namespace CodeBase.Model
 {
-    public class Root
+    public class Root : Node
     {
         protected List<Node> _children = new ();
         
-        public Status Update()
+        public override Status Update()
         {
             foreach (var child in _children)
             {

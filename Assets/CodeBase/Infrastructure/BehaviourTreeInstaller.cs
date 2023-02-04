@@ -1,5 +1,8 @@
 ﻿using System;
+using CodeBase.Presenter;
 using CodeBase.View;
+using UnityEditor;
+using UnityEngine;
 
 namespace CodeBase.Infrastructure
 {
@@ -14,8 +17,11 @@ namespace CodeBase.Infrastructure
             
             CreatorNodes creatorNodes = new CreatorNodes(new ContainerViewModel());
             creatorNodes.Create();
+
+            var menuBar = new MenuBar();
+            ToolbarPresenter toolbar = new ToolbarPresenter(menuBar, creatorNodes);
             
-            _viewContainer = new ViewContainer(_inputEvents, creatorNodes);
+            _viewContainer = new ViewContainer(_inputEvents, creatorNodes, menuBar);
         }
 
         public void Update()

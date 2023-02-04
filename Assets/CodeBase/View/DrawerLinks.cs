@@ -6,6 +6,9 @@ namespace CodeBase.View
 {
     public class DrawerLinks
     {
+        public IEnumerable<IEnumerable<Vector3>> WayControlPointPositions => _wayControlPointPositions;
+        
+        private List<List<Vector3>>_wayControlPointPositions;
         private List<(Waypoint start, Waypoint end)> _waypointsLinked;
         
         private readonly IPaverWay _paverWay;
@@ -21,21 +24,27 @@ namespace CodeBase.View
             _drawerArrow = drawerArrow;
 
             _waypointsLinked = new List<(Waypoint start, Waypoint end)>();
+            _wayControlPointPositions = new List<List<Vector3>>();
         }
         
         public void DrawFixedWays()
         {
+            _wayControlPointPositions = new List<List<Vector3>>();
             foreach (var way in _waypointsLinked)
             {
-                DrawWay(way.start, way.end);
+                var pointsWay = _paverWay.Pave(way.start.Position, way.end.Position);
+                DrawWay(pointsWay);
+                
+                _wayControlPointPositions.Add(new List<Vector3>());
+                _wayControlPointPositions[^1].AddRange(pointsWay);
             }
         }
         
-        public void DrawWay(Waypoint start, Waypoint end)
+        public void DrawWay(IEnumerable<Vector3> points)
         {
-            var pointsWay = _paverWay.Pave(start.Position, end.Position);
-            _drawer.Draw(pointsWay.ToArray());
-            _drawerArrow.Draw(start.Position, end.Position);
+            var pointsArray = points.ToArray();
+            _drawer.Draw();
+            _drawerArrow.Draw(pointsArray[0], pointsArray[^1]);
         }
         
         public void DrawWay(Waypoint start, Vector2 end)

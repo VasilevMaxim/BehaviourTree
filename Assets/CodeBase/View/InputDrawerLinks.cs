@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace CodeBase.View
@@ -46,6 +47,14 @@ namespace CodeBase.View
                 if (_waypointDown != null)
                 {
                     return;
+                }
+            }
+            
+            foreach (var wayControlPoint in _drawerLinks.WayControlPointPositions.SelectMany(_ => _))
+            {
+                if (Vector2.Distance(mousePosition, wayControlPoint) < 3)
+                {
+                    Debug.Log("ASYKA");
                 }
             }
         }
