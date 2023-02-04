@@ -3,12 +3,15 @@ using CodeBase.Model;
 using CodeBase.Presenter;
 using CodeBase.View;
 using UnityEngine;
+using ContextMenu = CodeBase.View.ContextMenu;
 
 namespace CodeBase.Infrastructure
 {
     internal class CreatorNodes : IGetterNodesView, ICreatorNodes
     {
-        private readonly ContainerViewModel _containerViewModel;
+        public WorkspaceWindow WorkspaceWindow => _workspaceWindow;
+        public ContextMenu ContextMenu => _contextMenu;
+        
         private SequenceView _firstSv;
         private SequenceView _firstSv2;
         private SequenceView _firstSv3;
@@ -18,12 +21,22 @@ namespace CodeBase.Infrastructure
 
         private List<INodeView> _nodesView;
         private Root _rootModel;
-
-        public CreatorNodes(ContainerViewModel containerViewModel)
+        
+        private readonly ContainerViewModel _containerViewModel;
+        private readonly InputEvents _inputEvents;
+        private readonly WorkspaceWindow _workspaceWindow;
+        private readonly ContextMenu _contextMenu;
+        
+        public CreatorNodes(ContainerViewModel containerViewModel,  InputEvents inputEvents)
         {
             _containerViewModel = containerViewModel;
+            _inputEvents = inputEvents;
             _style = Resources.Load<NodeStyle>("StyleSequence");
             _nodesView = new List<INodeView>();
+
+            _workspaceWindow = new WorkspaceWindow(_inputEvents, this);
+            _contextMenu = new ContextMenu(_workspaceWindow, _inputEvents); 
+            ContextMenuPresenter presenter = new ContextMenuPresenter(this, _contextMenu);
         }
 
         public void Create()
@@ -42,6 +55,14 @@ namespace CodeBase.Infrastructure
             
             _containerViewModel.Add(sequence, sequenceView);
             _nodesView.Add(sequenceView);
+        }
+        
+        public void AddTask(INodeView view)
+        {
+            var sequence = new Sequence();
+            
+            _containerViewModel.Add(sequence, view);
+            _nodesView.Add(view);
         }
 
         public IEnumerable<INodeView> GetNodes()

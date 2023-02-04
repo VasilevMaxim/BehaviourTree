@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using UnityEngine;
 
 namespace CodeBase.View
 {
-    public interface IGetterNodesView
-    {
-        IEnumerable<INodeView> GetNodes();
-    }
-    
     public class WorkspaceWindow : Window
     {
         public Rect Rect { get; set; }
@@ -62,6 +57,13 @@ namespace CodeBase.View
 
             GUI.EndScrollView();
         }
+        
+        public void AddTask(Type type)
+        {
+            
+            // _sequences.Add(new SequenceView(new Vector2(0, 0)));
+        }
+        
 
         public void AddSequence()
         {
