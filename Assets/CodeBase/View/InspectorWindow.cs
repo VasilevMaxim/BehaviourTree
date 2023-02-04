@@ -32,8 +32,6 @@ namespace CodeBase.View
             _shows.Add(shows);
         }
 
-      
-        
         public void Update()
         {
             var styleBox = new GUIStyle(EditorStyles.toolbar)
@@ -46,7 +44,7 @@ namespace CodeBase.View
             };
 
             var position = new Vector2(Screen.width * 0.8f, 21);
-            var scale = new Vector2(Screen.width * 0.2f, Screen.height);
+            var scale = new Vector2(Screen.width * 0.2f, Screen.height - 80);
             GUI.Box(new Rect(position,scale), GUIContent.none, styleBox);
             
             var imageInfo = EditorGUIUtility.IconContent("d_Preset.Context@2x").image;

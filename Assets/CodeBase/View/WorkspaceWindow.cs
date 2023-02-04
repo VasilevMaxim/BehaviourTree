@@ -45,7 +45,7 @@ namespace CodeBase.View
 
         public void Update()
         {
-            Rect = new Rect(0, 70, Screen.width * 0.8f, Screen.height - 100);
+            Rect = new Rect(0, 70, Screen.width * 0.8f, Screen.height - 118);
             _inputEvents.SetDeltaScrollWindow(Rect.position - RectScale.position - _scrollPosition);
 
             
