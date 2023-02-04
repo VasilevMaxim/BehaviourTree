@@ -3,12 +3,13 @@
     public class ViewControl
     {
         private MovingNodes _movingNodes;
-        private SelectingNodes _selectingNodes;
+        public SelectingNodes SelectingNodes { get; private set; }
         
         private readonly Workspace _workspace;
         private readonly WorkspaceWindow _window;
         private readonly IInputEventsView _inputEvents;
-        
+        private readonly HintPositionView _hintPositionView;
+
         public ViewControl(Workspace workspace, WorkspaceWindow window, IInputEventsView inputEvents)
         {
             _workspace = workspace;
@@ -18,10 +19,10 @@
 
         public void Initialize()
         {
-            _selectingNodes = new SelectingNodes(_workspace, _inputEvents);
-            _movingNodes = new MovingNodes(_selectingNodes, _window, _inputEvents);
+            SelectingNodes = new SelectingNodes(_workspace, _inputEvents);
+            _movingNodes = new MovingNodes(SelectingNodes, _window, _inputEvents);
            
-            _selectingNodes.Initialize();
+            SelectingNodes.Initialize();
             _movingNodes.Initialize();
         }
     }

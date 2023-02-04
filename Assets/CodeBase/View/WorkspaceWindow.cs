@@ -25,6 +25,7 @@ namespace CodeBase.View
         private readonly IInputEventsView _inputEvents;
         private IGetterNodesView _getterNodesView;
         private Vector2 _scrollPosition;
+        private readonly HintPositionView _hintPositionView;
         public Rect RectScale { get; set; }
 
         public WorkspaceWindow(IInputEventsView inputEvents, IGetterNodesView getterNodesView)
@@ -35,6 +36,8 @@ namespace CodeBase.View
             _drawerLinks = new DrawerLinks(new PaverWayBezier(), new DrawerLink(1), new DrawerArrow());
             _inputDrawerLinks = new InputDrawerLinks(_workspace, _drawerLinks, inputEvents);
             _viewControl = new ViewControl(_workspace, this, inputEvents);
+            _hintPositionView = new HintPositionView(_inputEvents);
+            
             _viewControl.Initialize();
             RectScale = new Rect(0, 0, 800, 1500);
             // _sv = new SequenceView(new Vector2(100, 100));
@@ -46,13 +49,14 @@ namespace CodeBase.View
         public void Update()
         {
             Rect = new Rect(0, 70, Screen.width * 0.8f, Screen.height - 118);
-            _inputEvents.SetDeltaScrollWindow(Rect.position - RectScale.position - _scrollPosition);
+            var delta = Rect.position - RectScale.position - _scrollPosition;
+            _inputEvents.SetDeltaScrollWindow(delta);
 
-            
             _scrollPosition = GUI.BeginScrollView(Rect, _scrollPosition, RectScale);
             _workspace.Nodes = _getterNodesView.GetNodes().ToList();
             _workspace.Nodes.ForEach(f => f.Update());
             _inputDrawerLinks.Draw();
+            _hintPositionView.Draw(_viewControl.SelectingNodes.NodeViewSelected, delta);
             
             GUI.EndScrollView();
             

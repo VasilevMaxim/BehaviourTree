@@ -5,9 +5,11 @@
         private readonly WorkspaceWindow _workspace;
         private readonly InspectorWindow _inspector;
         
+        private StatusBar _statusBar;
+        
         private readonly ContextMenu _contextMenu;
         private readonly MenuBar _menuBar;
-        private StatusBar _statusBar;
+        private readonly HintPositionView _hintPositionView;
 
         public ViewContainer(IInputEventsView inputEvents, IGetterNodesView getterNodesView, MenuBar menuBar)
         {
@@ -15,6 +17,7 @@
             _inspector = new InspectorWindow();
             _contextMenu = new ContextMenu(_workspace, inputEvents);
             _statusBar = new StatusBar(_workspace);
+
             _menuBar = menuBar;
         }
 

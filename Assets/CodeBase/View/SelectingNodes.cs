@@ -19,9 +19,9 @@ namespace CodeBase.View
         public void Initialize()
         {
             _inputEventsView.MouseDown += InputEventsViewOnMouseDown;
+            _inputEventsView.MouseRightDown += InputEventsViewOnMouseRightDown;
         }
         
-                
         public void Dispose()
         {
             _inputEventsView.MouseDrag -= InputEventsViewOnMouseDown;
@@ -48,6 +48,12 @@ namespace CodeBase.View
                     NodeViewSelected = node;
                 }
             }
+        }
+        
+        private void InputEventsViewOnMouseRightDown(Vector2 mousePosition)
+        {
+            _workspace.Nodes.ForEach(node => node.Deselect());
+            NodeViewSelected = null;
         }
     }
 }
