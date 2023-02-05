@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c152a1159b9748738d28592032ead765, type: 3}
   m_Name: BlackboardStyle
   m_EditorClassIdentifier: 
-  <Scale>k__BackingField: {x: 0, y: 0}
-  <ColorDefault>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
+  <Scale>k__BackingField: {x: 250, y: 150}
+  <ColorDefault>k__BackingField: {r: 0, g: 0, b: 0, a: 0.11372549}

@@ -24,6 +24,7 @@ namespace CodeBase.View
         private readonly IInputEventsView _inputEvents;
         private readonly HintPositionView _hintPositionView;
         private readonly GridFull _gridFull;
+        private readonly ScalableUIElement _scalableUIElement;
 
         public WorkspaceWindow(IInputEventsView inputEvents, IGetterNodesView getterNodesView)
         {
@@ -34,6 +35,7 @@ namespace CodeBase.View
             _inputDrawerLinks = new InputDrawerLinks(_workspace, _drawerLinks, inputEvents);
             _viewControl = new ViewControl(_workspace, this, inputEvents);
             _gridFull = new GridFull(2);
+            _scalableUIElement = new ScalableUIElement(inputEvents);
             _hintPositionView = new HintPositionView();
             
             _viewControl.Initialize();
@@ -52,6 +54,7 @@ namespace CodeBase.View
             
             _workspace.UIElements = _getterNodesView.UIElements.ToList();
             _getterNodesView.UIElements.ForEach(f => f.Update());
+            _scalableUIElement.Update(_getterNodesView.UIElements.ToList()[0]);
             _inputDrawerLinks.Draw();
             _hintPositionView.Draw(_viewControl.SelectingNodes.UIElementSelected);
 
