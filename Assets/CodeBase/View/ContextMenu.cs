@@ -9,7 +9,7 @@ namespace CodeBase.View
 {
     public class ContextMenu
     {
-        public event Action<INodeView> AddedTask;
+        public event Action<Type> AddedTask;
         
         private GenericMenu _genericMenu;
         
@@ -33,13 +33,8 @@ namespace CodeBase.View
             _genericMenu = new GenericMenu();
             foreach (var type in _typeTasks)
             {
-                _genericMenu.AddItem(new GUIContent("Tasks/" + type.Name), false, () => AddedTask?.Invoke(CreateNodeInstance(type)));
+                _genericMenu.AddItem(new GUIContent("Tasks/" + type.Name), false, () => AddedTask?.Invoke(type));
             }
-        }
-
-        private INodeView CreateNodeInstance(Type type)
-        {
-            return (INodeView) Activator.CreateInstance(type, Resources.Load<NodeStyle>("StyleSequence"), new WaypointsDrawer(4), new Vector3(300, 100, 0));
         }
 
 

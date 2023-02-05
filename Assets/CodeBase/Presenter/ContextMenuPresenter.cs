@@ -1,4 +1,5 @@
-﻿using CodeBase.View;
+﻿using System;
+using CodeBase.View;
 
 namespace CodeBase.Presenter
 {
@@ -15,9 +16,9 @@ namespace CodeBase.Presenter
             _contextMenu.AddedTask += ContextMenuOnAddedTask;
         }
 
-        private void ContextMenuOnAddedTask(INodeView nodeView)
+        private void ContextMenuOnAddedTask(Type type)
         {
-            _creatorNodes.AddTask(nodeView);
+            _creatorNodes.AddTask(type);
         }
     }
 }

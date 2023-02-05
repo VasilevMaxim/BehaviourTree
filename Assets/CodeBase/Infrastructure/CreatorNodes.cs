@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CodeBase.Model;
 using CodeBase.Presenter;
 using CodeBase.View;
@@ -27,7 +28,7 @@ namespace CodeBase.Infrastructure
         private readonly WorkspaceWindow _workspaceWindow;
         private readonly ContextMenu _contextMenu;
         
-        public CreatorNodes(ContainerViewModel containerViewModel,  InputEvents inputEvents)
+        public CreatorNodes(ContainerViewModel containerViewModel, InputEvents inputEvents)
         {
             _containerViewModel = containerViewModel;
             _inputEvents = inputEvents;
@@ -57,17 +58,23 @@ namespace CodeBase.Infrastructure
             _nodesView.Add(sequenceView);
         }
         
-        public void AddTask(INodeView view)
+        public void AddTask(Type typeNodeView)
         {
             var sequence = new Sequence();
+            var taskView = CreateNodeInstance(typeNodeView);
             
-            _containerViewModel.Add(sequence, view);
-            _nodesView.Add(view);
+            _containerViewModel.Add(sequence, taskView);
+            _nodesView.Add(taskView);
         }
 
         public IEnumerable<INodeView> GetNodes()
         {
             return _nodesView;
+        }
+
+        private INodeView CreateNodeInstance(Type type)
+        {
+            return (INodeView) Activator.CreateInstance(type, Resources.Load<NodeStyle>("StyleSequence"), new WaypointsDrawer(4), (Vector3) _inputEvents.MousePosition);
         }
     }
 }
