@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace CodeBase.View
@@ -28,13 +29,13 @@ namespace CodeBase.View
 
         private void InputEventsOnMouseDown(Vector2 mousePosition)
         {
-            if (_selectingNodes.NodeViewSelected == null)
+            if (_selectingNodes.UIElementSelected == null)
             {
                 return;
             }
             
             _mousePositionMouseDown = mousePosition;
-            _nodePositionMouseDown = _selectingNodes.NodeViewSelected.Rect.position;
+            _nodePositionMouseDown = _selectingNodes.UIElementSelected.Rect.position;
         }
 
         public void Dispose()
@@ -44,56 +45,60 @@ namespace CodeBase.View
         
         private void InputEventsOnMouseDrag(Vector2 mousePosition)
         {
-            if (_selectingNodes.NodeViewSelected == null)
+            if (_selectingNodes.UIElementSelected == null)
             {
                 return;
             }
 
-            Move(_selectingNodes.NodeViewSelected, mousePosition);
+            Move(_selectingNodes.UIElementSelected, mousePosition);
         }
         
-        private void Move(INodeView nodeView, Vector2 mousePosition)
+        private void Move(UIElement uiElement, Vector2 mousePosition)
         {
             var blocked = mousePosition - (_mousePositionMouseDown - _nodePositionMouseDown);
-            nodeView.Rect = nodeView.Rect.GetRectNewPosition(blocked);
-            
-            Clips(nodeView);
-            ControlSizeScrollWindow(nodeView);
+            uiElement.Rect = uiElement.Rect.GetRectNewPosition(blocked);
+
+            if (uiElement is INodeView)
+            {
+                Clips(uiElement);
+            }
+
+            ControlSizeScrollWindow(uiElement);
         }
 
-        private void Clips(INodeView nodeView)
+        private void Clips(UIElement uiElement)
         {
-            foreach (var node in _workspace.Nodes)
+            foreach (var node in _workspace.UIElements.OfType<INodeView>())
             {
-                if (node == nodeView)
+                if (node == uiElement)
                 {
                     continue;
                 }
 
-                nodeView.Rect = nodeView.Rect.Clip(node.Rect, 20);
+                uiElement.Rect = uiElement.Rect.Clip(node.Rect, 20);
             }
         }
         
-        private void ControlSizeScrollWindow(INodeView nodeView)
+        private void ControlSizeScrollWindow(UIElement uiElement)
         {
-            if (nodeView.Rect.xMax > _window.RectScale.xMax)
+            if (uiElement.Rect.xMax > _window.RectScale.xMax)
             {
-                _window.RectScale = new Rect(_window.RectScale.x, _window.RectScale.y, _window.RectScale.width + (nodeView.Rect.xMax - _window.RectScale.xMax), _window.RectScale.height);
+                _window.RectScale = new Rect(_window.RectScale.x, _window.RectScale.y, _window.RectScale.width + (uiElement.Rect.xMax - _window.RectScale.xMax), _window.RectScale.height);
             } 
             
-            if (nodeView.Rect.position.x < _window.RectScale.xMin)
+            if (uiElement.Rect.position.x < _window.RectScale.xMin)
             {
-                _window.RectScale = new Rect(nodeView.Rect.position.x, _window.RectScale.y, _window.RectScale.width + (_window.RectScale.xMin - nodeView.Rect.position.x), _window.RectScale.height);
+                _window.RectScale = new Rect(uiElement.Rect.position.x, _window.RectScale.y, _window.RectScale.width + (_window.RectScale.xMin - uiElement.Rect.position.x), _window.RectScale.height);
             }
             
-            if (nodeView.Rect.yMax > _window.RectScale.yMax) 
+            if (uiElement.Rect.yMax > _window.RectScale.yMax) 
             {
-                _window.RectScale = new Rect(_window.RectScale.x, _window.RectScale.y, _window.RectScale.width, _window.RectScale.height  + (nodeView.Rect.yMax - _window.RectScale.yMax));
+                _window.RectScale = new Rect(_window.RectScale.x, _window.RectScale.y, _window.RectScale.width, _window.RectScale.height  + (uiElement.Rect.yMax - _window.RectScale.yMax));
             }
             
-            if (nodeView.Rect.position.y < _window.RectScale.yMin)
+            if (uiElement.Rect.position.y < _window.RectScale.yMin)
             {
-                _window.RectScale = new Rect(_window.RectScale.x, nodeView.Rect.position.y, _window.RectScale.width, _window.RectScale.height + (_window.RectScale.yMin - nodeView.Rect.position.y));
+                _window.RectScale = new Rect(_window.RectScale.x, uiElement.Rect.position.y, _window.RectScale.width, _window.RectScale.height + (_window.RectScale.yMin - uiElement.Rect.position.y));
             }
         }
     }

@@ -4,18 +4,17 @@ namespace CodeBase.View
 {
     public class HintPositionView
     {
-        public void Draw(INodeView node)
+        public void Draw(ISelectable selectableElement)
         {
-            if (node == null)
+            if (selectableElement == null)
             {
                 return;
             }
             
-            var spaceY = 30;
-            var positionX = node.Rect.position.x;
-            var positionY = node.Rect.position.y + node.Rect.height / 2 + 10 + spaceY;
+            var positionX = selectableElement.Rect.position.x;
+            var positionY = selectableElement.Rect.yMax + 10;
             
-            GUI.Box(new Rect(positionX, positionY, node.Rect.width, 20), node.Rect.x + ", " + node.Rect.y);
+            GUI.Box(new Rect(positionX, positionY, selectableElement.Rect.width, 20), selectableElement.Rect.x + ", " + selectableElement.Rect.y);
         }
     }
 }

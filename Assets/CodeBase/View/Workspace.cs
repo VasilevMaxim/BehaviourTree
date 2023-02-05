@@ -4,21 +4,21 @@ namespace CodeBase.View
 {
     public class Workspace
     {
-        public List<INodeView> Nodes { get; set; }
+        public List<UIElement> UIElements { get; set; }
 
         public Workspace()
         {
-            Nodes = new List<INodeView>();
+            UIElements = new List<UIElement>();
         }
 
         public void AddElement(INodeView element)
         {
-            Nodes.Add(element);
+            UIElements.Add(element);
         }
         
         public void AddElements(IEnumerable<INodeView> element)
         {
-            Nodes.AddRange(element);
+            UIElements.AddRange(element);
         }
     }
 }

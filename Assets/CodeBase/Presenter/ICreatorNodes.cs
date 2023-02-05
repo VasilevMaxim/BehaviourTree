@@ -7,6 +7,8 @@ namespace CodeBase.Presenter
     {
         void AddSequence();
         void AddSelector();
+        void AddComment();
+        void AddBlackboard();
         void AddTask(Type typeNode);
     }
 }

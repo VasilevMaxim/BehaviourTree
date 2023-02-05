@@ -9,7 +9,7 @@ namespace CodeBase.View
         IEnumerable<Waypoint> GetWaypoints();
     }
     
-    public interface INodeView : UIElement, ISelectable, IGetterWaypoints
+    public interface INodeView : ISelectable, IGetterWaypoints
     {
         
     }

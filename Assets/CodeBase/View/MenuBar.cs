@@ -10,6 +10,8 @@ namespace CodeBase.View
 
         public event Action AddingSequence;
         public event Action AddingSelector;
+        public event Action AddingBlackboard;
+        public event Action AddingComment;
         
         public void Update()
         {
@@ -62,6 +64,17 @@ namespace CodeBase.View
             }
             
             GUILayout.Button("Decorator", styleButton, GUILayout.Width(90), GUILayout.Height(48));
+
+            if (GUILayout.Button("Blackboard", styleButton, GUILayout.Width(90), GUILayout.Height(48)))
+            {
+                AddingBlackboard?.Invoke();
+            }
+            
+            if (GUILayout.Button("Comment", styleButton, GUILayout.Width(90), GUILayout.Height(48)))
+            {
+                AddingComment?.Invoke();
+            }
+            
             GUILayout.EndHorizontal();
         }
     }

@@ -39,10 +39,10 @@ namespace CodeBase.View
         
         private void InputEventsOnMouseDown(Vector2 mousePosition)
         {
-            foreach (var node in _workspace.Nodes)
+            foreach (var node in _workspace.UIElements.OfType<IGetterWaypoints>())
             {
                 _waypointDown = GetDownWaypoint(node, mousePosition);
-                _nodeViewDown = node;
+                _nodeViewDown = node as INodeView;
                 
                 if (_waypointDown != null)
                 {
@@ -66,29 +66,38 @@ namespace CodeBase.View
                 return;
             }
             
-            foreach (var node in _workspace.Nodes)
+            foreach (var getterWaypoints in _workspace.UIElements.OfType<IGetterWaypoints>())
             {
-                var waypointUp = GetDownWaypoint(node, mousePosition);
+                var waypointUp = GetDownWaypoint(getterWaypoints, mousePosition);
                 if (waypointUp != null)
                 {
                     _drawerLinks.AddWay(_waypointDown, waypointUp);
-                    
-                    if (_nodeViewDown is IAddChild addChild)
+
+                    if (getterWaypoints is INodeView nodeView)
                     {
-                        addChild.AddChild(node);
-                    }
-                    
-                    if (_nodeViewDown is ISetterParent setterParent)
-                    {
-                        setterParent.SetParent(node);
+                        if (_nodeViewDown is IAddChild addChild)
+                        {
+                            addChild.AddChild(nodeView);
+                        }
+
+                        if (_nodeViewDown is ISetterParent setterParent)
+                        {
+                            setterParent.SetParent(nodeView);
+                        }
                     }
                 }
             }
         }
         
-        private Waypoint GetDownWaypoint(INodeView nodeView, Vector2 mousePosition)
+        private Waypoint GetDownWaypoint(IGetterWaypoints getterWaypoints, Vector2 mousePosition)
         {
-            foreach (var waypoint in nodeView.GetWaypoints())
+            var waypoints = getterWaypoints.GetWaypoints();
+            if (waypoints == null)
+            {
+                return null;
+            }
+            
+            foreach (var waypoint in waypoints)
             {
                 var distance = Vector2.Distance(mousePosition, waypoint.Position);
                 if (distance < waypoint.DeltaSize)

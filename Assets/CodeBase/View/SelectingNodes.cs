@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace CodeBase.View
 {
     public class SelectingNodes : IDisposable
     {
-        public INodeView NodeViewSelected { get; private set; }
+        public ISelectable UIElementSelected { get; private set; }
         
         private readonly Workspace _workspace;
         private readonly IInputEventsView _inputEventsView;
@@ -29,31 +30,41 @@ namespace CodeBase.View
         
         private void InputEventsViewOnMouseDown(Vector2 mousePosition)
         {
-            _workspace.Nodes.ForEach(node => node.Deselect());
-            NodeViewSelected = null;
+            _workspace.UIElements.OfType<ISelectable>().ForEach(node => node.Deselect());
+            UIElementSelected = null;
             
-            foreach (var node in _workspace.Nodes)
+            foreach (var uiElement in _workspace.UIElements)
             {
-                foreach (var waypoint in  node.GetWaypoints())
+                if (uiElement is IGetterWaypoints getterWaypoints)
                 {
-                    if (Vector2.Distance(mousePosition, waypoint.Position) < waypoint.DeltaSize)
+                    var waypoints = getterWaypoints.GetWaypoints();
+                    if (waypoints != null)
                     {
-                        return;
+                        foreach (var waypoint in waypoints)
+                        {
+                            if (Vector2.Distance(mousePosition, waypoint.Position) < waypoint.DeltaSize)
+                            {
+                                return;
+                            }
+                        }
                     }
                 }
 
-                if (mousePosition.IsHoverRect(node.Rect))
+                if (uiElement is ISelectable selectable)
                 {
-                    node.Select();
-                    NodeViewSelected = node;
+                    if (mousePosition.IsHoverRect(uiElement.Rect))
+                    {
+                        selectable.Select();
+                        UIElementSelected = selectable;
+                    }
                 }
             }
         }
         
         private void InputEventsViewOnMouseRightDown(Vector2 mousePosition)
         {
-            _workspace.Nodes.ForEach(node => node.Deselect());
-            NodeViewSelected = null;
+            _workspace.UIElements.OfType<ISelectable>().ForEach(node => node.Deselect());
+            UIElementSelected = null;
         }
     }
 }

@@ -50,29 +50,12 @@ namespace CodeBase.View
             
             _gridFull.Draw(Rect, RectScale.position + _scrollPosition);
             
-            _workspace.Nodes = _getterNodesView.GetNodes().ToList();
-            _workspace.Nodes.ForEach(f => f.Update());
+            _workspace.UIElements = _getterNodesView.UIElements.ToList();
+            _getterNodesView.UIElements.ForEach(f => f.Update());
             _inputDrawerLinks.Draw();
-            _hintPositionView.Draw(_viewControl.SelectingNodes.NodeViewSelected);
+            _hintPositionView.Draw(_viewControl.SelectingNodes.UIElementSelected);
 
             GUI.EndScrollView();
-        }
-        
-        public void AddTask(Type type)
-        {
-            
-            // _sequences.Add(new SequenceView(new Vector2(0, 0)));
-        }
-        
-
-        public void AddSequence()
-        {
-           // _sequences.Add(new SequenceView(new Vector2(0, 0)));
-        }
-        
-        public void AddSelector()
-        {
-           // _sequences.Add(new SequenceView(new Vector2(0, 0)));
         }
     }
 }
