@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace CodeBase.Infrastructure
 {
+    public class KeyDownEvents
+    {
+        
+    }
+    
     public class InputEvents : IInputEventsView
     {
         private Action _repaint;
@@ -17,6 +22,7 @@ namespace CodeBase.Infrastructure
         public event Action<Vector2> MouseDrag;
         public event Action<Vector2> MouseUp;
         public event Action Layout;
+        public event Action<KeyCode> KeyDown;
         
         public InputEvents(Action repaint)
         {
@@ -52,6 +58,12 @@ namespace CodeBase.Infrastructure
                 case EventType.MouseUp:
                     MouseUp?.Invoke(MousePosition);
                     IsMouseDrag = false;
+                    _repaint?.Invoke();
+                    
+                    break;
+                
+                case EventType.KeyDown:
+                    KeyDown?.Invoke(e.keyCode);
                     _repaint?.Invoke();
                     break;
             }

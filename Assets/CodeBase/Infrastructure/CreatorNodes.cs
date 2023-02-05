@@ -45,6 +45,16 @@ namespace CodeBase.Infrastructure
             _workspaceWindow = new WorkspaceWindow(_inputEvents, this);
             _contextMenu = new ContextMenu(_workspaceWindow, _inputEvents); 
             ContextMenuPresenter presenter = new ContextMenuPresenter(this, _contextMenu);
+            
+            inputEvents.KeyDown += InputEventsOnKeyDown;
+        }
+
+        private void InputEventsOnKeyDown(KeyCode keyCode)
+        {
+            if (keyCode == KeyCode.Delete)
+            {
+                Remove(_workspaceWindow.ViewControl.SelectingNodes.UIElementSelected);
+            }
         }
 
         public void Create()
@@ -53,6 +63,11 @@ namespace CodeBase.Infrastructure
             _rootModel = new Root();
             _containerViewModel.Add(_rootModel, _rootView);
             _uiElementsView.Add(_rootView);
+        }
+
+        public void Remove(UIElement element)
+        {
+            _uiElementsView.Remove(element);
         }
 
         public void AddSequence()

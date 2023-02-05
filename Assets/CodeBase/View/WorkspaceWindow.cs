@@ -13,7 +13,7 @@ namespace CodeBase.View
         private readonly SequenceView _sv2;
         private TaskView _task;
 
-                
+        public ViewControl ViewControl => _viewControl;
         private IGetterNodesView _getterNodesView;
         private Vector2 _scrollPosition;
 
@@ -37,7 +37,7 @@ namespace CodeBase.View
             _gridFull = new GridFull(2);
             _scalableUIElement = new ScalableUIElement(inputEvents);
             _hintPositionView = new HintPositionView();
-            
+
             _viewControl.Initialize();
             RectScale = new Rect(0, 0, 800, 1500);
         }
@@ -54,10 +54,10 @@ namespace CodeBase.View
             
             _workspace.UIElements = _getterNodesView.UIElements.ToList();
             _getterNodesView.UIElements.ForEach(f => f.Update());
-            _scalableUIElement.Update(_getterNodesView.UIElements.ToList()[0]);
             _inputDrawerLinks.Draw();
             _hintPositionView.Draw(_viewControl.SelectingNodes.UIElementSelected);
-
+            _scalableUIElement.Update(_viewControl.SelectingNodes.UIElementSelected);
+            
             GUI.EndScrollView();
         }
     }
