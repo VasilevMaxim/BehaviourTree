@@ -9,6 +9,7 @@ namespace CodeBase.View
         private GUIStyle _skinMenuBarButton;
 
         public event Action AddingSequence;
+        public event Action AddingSelector;
         
         public void Update()
         {
@@ -49,11 +50,17 @@ namespace CodeBase.View
             GUILayout.EndHorizontal();
             
             GUILayout.BeginHorizontal(styleBox, GUILayout.Width(Screen.width * 0.8f), GUILayout.Height(50));
+            
             if (GUILayout.Button("Sequence", styleButton, GUILayout.Width(90), GUILayout.Height(48)))
             {
                 AddingSequence?.Invoke();
             }
-            GUILayout.Button("Selector", styleButton, GUILayout.Width(90), GUILayout.Height(48));
+
+            if (GUILayout.Button("Selector", styleButton, GUILayout.Width(90), GUILayout.Height(48)))
+            {
+                AddingSelector?.Invoke();
+            }
+            
             GUILayout.Button("Decorator", styleButton, GUILayout.Width(90), GUILayout.Height(48));
             GUILayout.EndHorizontal();
         }
