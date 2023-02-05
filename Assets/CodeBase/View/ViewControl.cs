@@ -20,7 +20,7 @@
         public void Initialize()
         {
             SelectingNodes = new SelectingNodes(_workspace, _inputEvents);
-            _movingNodes = new MovingNodes(SelectingNodes, _window, _inputEvents);
+            _movingNodes = new MovingNodes(SelectingNodes, _workspace, _window, _inputEvents);
            
             SelectingNodes.Initialize();
             _movingNodes.Initialize();

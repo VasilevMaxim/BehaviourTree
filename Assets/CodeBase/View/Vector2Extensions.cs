@@ -11,5 +11,11 @@ namespace CodeBase.View
                    && vector2.y > rect.y
                    && vector2.y < rect.y + rect.height;
         }
+
+        public static bool IsRange(this float value, float min, float max)
+        {
+            return value >= min && value <= max;
+        }
+
     }
 }

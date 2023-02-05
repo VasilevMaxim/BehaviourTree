@@ -10,9 +10,11 @@ namespace CodeBase.View
         private Vector2 _mousePositionMouseDown;
         private Vector2 _nodePositionMouseDown;
         private readonly WorkspaceWindow _window;
+        private Workspace _workspace;
 
-        public MovingNodes(SelectingNodes selectingNodes, WorkspaceWindow window, IInputEventsView inputEvents)
+        public MovingNodes(SelectingNodes selectingNodes, Workspace workspace, WorkspaceWindow window, IInputEventsView inputEvents)
         {
+            _workspace = workspace;
             _window = window;
             _selectingNodes = selectingNodes;
             _inputEventsView = inputEvents;
@@ -46,16 +48,32 @@ namespace CodeBase.View
             {
                 return;
             }
-            
+
             Move(_selectingNodes.NodeViewSelected, mousePosition);
         }
         
         private void Move(INodeView nodeView, Vector2 mousePosition)
         {
-            nodeView.Rect = nodeView.Rect.GetRectNewPosition(mousePosition - (_mousePositionMouseDown - _nodePositionMouseDown));
+            var blocked = mousePosition - (_mousePositionMouseDown - _nodePositionMouseDown);
+            nodeView.Rect = nodeView.Rect.GetRectNewPosition(blocked);
+            
+            Clips(nodeView);
             ControlSizeScrollWindow(nodeView);
         }
 
+        private void Clips(INodeView nodeView)
+        {
+            foreach (var node in _workspace.Nodes)
+            {
+                if (node == nodeView)
+                {
+                    continue;
+                }
+
+                nodeView.Rect = nodeView.Rect.Clip(node.Rect, 20);
+            }
+        }
+        
         private void ControlSizeScrollWindow(INodeView nodeView)
         {
             if (nodeView.Rect.xMax > _window.RectScale.xMax)
