@@ -15,13 +15,11 @@ namespace CodeBase.Infrastructure
         public ContextMenu ContextMenu => _contextMenu;
         public IEnumerable<UIElement> UIElements => _uiElementsView;
         
-        
         private SequenceView _firstSv;
         private SequenceView _firstSv2;
         private SequenceView _firstSv3;
         private RootView _rootView;
 
-  
         private Root _rootModel;
         
         private readonly ContainerViewModel _containerViewModel;
@@ -70,9 +68,9 @@ namespace CodeBase.Infrastructure
             _uiElementsView.Remove(element);
         }
 
-        public void AddSequence()
+        public void AddSequence(bool isMousePosition)
         {
-            var sequenceView = new SequenceView(_style, new WaypointsDrawer(4), _workspaceWindow.Rect.center);
+            var sequenceView = new SequenceView(_style, new WaypointsDrawer(4), isMousePosition ? _inputEvents.MousePosition : _workspaceWindow.Rect.center);
             var sequence = new Sequence();
             var sequencePresenter = new SequencePresenter(sequence, sequenceView, _containerViewModel);
 
@@ -86,9 +84,9 @@ namespace CodeBase.Infrastructure
             _uiElementsView.Add(sequenceView);
         }
         
-        public void AddSelector()
+        public void AddSelector(bool isMousePosition)
         {
-            var selectorView = new SelectorView(_style, new WaypointsDrawer(4), _workspaceWindow.Rect.center);
+            var selectorView = new SelectorView(_style, new WaypointsDrawer(4), isMousePosition ? _inputEvents.MousePosition : _workspaceWindow.Rect.center);
             var selector = new Selector();
             var selectorPresenter = new SelectorPresenter(selector, selectorView, _containerViewModel);
 
@@ -101,10 +99,15 @@ namespace CodeBase.Infrastructure
             _containerViewModel.Add(selector, selectorView);
             _uiElementsView.Add(selectorView);
         }
-        
-        public void AddComment()
+
+        public void AddSimpleParallel(bool isMousePosition)
         {
-            var commentView = new CommentView(_style, _workspaceWindow.Rect.center);
+            throw new NotImplementedException();
+        }
+
+        public void AddComment(bool isMousePosition)
+        {
+            var commentView = new CommentView(_style, isMousePosition ? _inputEvents.MousePosition : _workspaceWindow.Rect.center);
             foreach (var nodeClip in _uiElementsView)
             {
                 commentView.Rect = commentView.Rect.Clip(nodeClip.Rect, 20);
@@ -136,7 +139,10 @@ namespace CodeBase.Infrastructure
 
         private INodeView CreateNodeInstance(Type type)
         {
-            return (INodeView) Activator.CreateInstance(type, Resources.Load<NodeStyle>("StyleSequence"), new WaypointsDrawer(4), (Vector3) _inputEvents.MousePosition);
+            return (INodeView) Activator.CreateInstance(type, 
+                                                        Resources.Load<NodeStyle>("StyleSequence"), 
+                                                        new WaypointsDrawer(4), 
+                                                        (Vector3) _inputEvents.MousePosition);
         }
     }
 }

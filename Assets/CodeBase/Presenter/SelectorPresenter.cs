@@ -19,6 +19,8 @@ namespace CodeBase.Presenter
 
             _view.AddedChild += ViewOnAddedChild;
             _view.SetedParent += ViewOnSetedParent;
+            _view.RemovedChild += ViewOnRemovedChild;
+            _view.RemovedParent += ViewOnRemovedParent;
         }
 
         private void ViewOnSetedParent(INodeView parent)
@@ -30,7 +32,16 @@ namespace CodeBase.Presenter
         {
             _model.AddChild(_container.GetModelByView(child));
         }
+        
+        private void ViewOnRemovedParent()
+        {
+            _model.RemoveParent();
+        }
 
+        private void ViewOnRemovedChild(INodeView child)
+        {
+            _model.RemoveChild(_container.GetModelByView(child));
+        }
 
         public void Initialize()
         {

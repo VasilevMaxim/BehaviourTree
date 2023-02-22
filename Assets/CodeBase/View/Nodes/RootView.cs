@@ -5,13 +5,19 @@ using UnityEngine;
 
 namespace CodeBase.View
 {
-    public class RootView : INodeView, IAddChild
+    public class RootView : INodeView, IHaveChild
     {
         private const string RootText = "Root";
         
         public Rect Rect { get; set; }
         
         public event Action<INodeView> AddedChild;
+        public void RemoveChild(INodeView child)
+        {
+            throw new NotImplementedException();
+        }
+
+        public event Action<INodeView> RemovedChild;
 
         private Color _colorCurrent;
         private GUIStyle _styleLabel;

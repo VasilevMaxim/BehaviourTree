@@ -4,7 +4,7 @@
     {
         public override Status Update()
         {
-            foreach (var child in _children)
+            foreach (var child in Children)
             {
                 if (child.Update() == Status.Successful)
                 {

@@ -73,9 +73,16 @@ namespace CodeBase.View
                 {
                     _drawerLinks.AddWay(_waypointDown, waypointUp);
 
+                    bool x = waypointUp != null;
+
+                    if (x == true)
+                    {
+                        
+                    }
+                    
                     if (getterWaypoints is INodeView nodeView)
                     {
-                        if (_nodeViewDown is IAddChild addChild)
+                        if (_nodeViewDown is IHaveChild addChild)
                         {
                             addChild.AddChild(nodeView);
                         }

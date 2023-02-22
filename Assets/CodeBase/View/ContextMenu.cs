@@ -10,6 +10,9 @@ namespace CodeBase.View
     public class ContextMenu
     {
         public event Action<Type> AddedTask;
+        public event Action AddedSequence;
+        public event Action AddedSelector;
+        public event Action AddedSimpleParallel;
         
         private GenericMenu _genericMenu;
         
@@ -35,6 +38,10 @@ namespace CodeBase.View
             {
                 _genericMenu.AddItem(new GUIContent("Tasks/" + type.Name), false, () => AddedTask?.Invoke(type));
             }
+            
+            _genericMenu.AddItem(new GUIContent("Sequence"), false, () => AddedSequence?.Invoke());
+            _genericMenu.AddItem(new GUIContent("Selector"), false, () => AddedSelector?.Invoke());
+            _genericMenu.AddItem(new GUIContent("Simple parallel"), false, () => AddedSimpleParallel?.Invoke());
         }
 
 

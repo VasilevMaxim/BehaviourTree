@@ -14,11 +14,29 @@ namespace CodeBase.Presenter
             _contextMenu = contextMenu;
             
             _contextMenu.AddedTask += ContextMenuOnAddedTask;
+            _contextMenu.AddedSequence += ContextMenuOnAddedSequence;
+            _contextMenu.AddedSelector += ContextMenuOnAddedSelector;
+            _contextMenu.AddedSimpleParallel += ContextMenuOnAddedSimpleParallel;
         }
 
         private void ContextMenuOnAddedTask(Type type)
         {
             _creatorNodes.AddTask(type);
+        }
+        
+        private void ContextMenuOnAddedSequence()
+        {
+            _creatorNodes.AddSequence(true);
+        }
+        
+        private void ContextMenuOnAddedSelector()
+        {
+            _creatorNodes.AddSelector(true);
+        }
+
+        private void ContextMenuOnAddedSimpleParallel()
+        {
+            _creatorNodes.AddSequence(true);
         }
     }
 }

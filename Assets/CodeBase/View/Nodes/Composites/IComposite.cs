@@ -1,6 +1,6 @@
 ﻿using CodeBase.View;
 
-internal interface IComposite : INodeView, ISetterParent, IAddChild
+internal interface IComposite : INodeView, ISetterParent, IHaveChild
 {
     
 }

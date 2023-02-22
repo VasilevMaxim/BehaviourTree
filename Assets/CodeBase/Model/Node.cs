@@ -2,13 +2,18 @@
 {
     public abstract class Node
     {
-        protected Node _parent;
-        
+        public Node Parent { get; protected set; }
+
         public abstract Status Update();
         
         public void SetParent(Node value)
         {
-            _parent = value;
+            Parent = value;
+        }
+
+        public void RemoveParent()
+        {
+            Parent = null;
         }
     }
 }
